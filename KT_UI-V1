@@ -865,3 +865,5 @@ local function UpdateColorFromText()
 end
 
 return Library
+
+return Library
