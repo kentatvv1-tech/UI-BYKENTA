@@ -1424,9 +1424,9 @@ function Library:Window(p)
 
 	UIPadding_2.Parent = Page_1
 	UIPadding_2.PaddingBottom = UDim.new(0,5)
-	UIPadding_2.PaddingLeft = UDim.new(0,120)
+	UIPadding_2.PaddingLeft = UDim.new(0,160)
 	UIPadding_2.PaddingRight = UDim.new(0,5)
-	UIPadding_2.PaddingTop = UDim.new(0,45)
+	UIPadding_2.PaddingTop = UDim.new(0,70)
 
 	local Topbar_1 = Instance.new("Frame")
 	local Frame_5 = Instance.new("Frame")
@@ -1452,7 +1452,7 @@ function Library:Window(p)
 	Topbar_1.BackgroundTransparency = 1
 	Topbar_1.BorderColor3 = Color3.fromRGB(0,0,0)
 	Topbar_1.BorderSizePixel = 0
-	Topbar_1.Size = UDim2.new(1, 0,0, 42)
+	Topbar_1.Size = UDim2.new(1, 0,0, 65)
 
 	Frame_5.Parent = Topbar_1
 	Frame_5.AnchorPoint = Vector2.new(0, 1)
@@ -1566,7 +1566,7 @@ function Library:Window(p)
 	Icon_1.BackgroundTransparency = 1
 	Icon_1.BorderColor3 = Color3.fromRGB(0,0,0)
 	Icon_1.BorderSizePixel = 0
-	Icon_1.Size = UDim2.new(0, 30,0, 30)
+	Icon_1.Size = UDim2.new(0, 45,0, 45)
 	Icon_1.Image = gl(Icon).Image
 	Icon_1.ImageRectSize = gl(Icon).ImageRectSize
 	Icon_1.ImageRectOffset = gl(Icon).ImageRectPosition
@@ -1580,7 +1580,7 @@ function Library:Window(p)
 	Title_1.BorderColor3 = Color3.fromRGB(0,0,0)
 	Title_1.BorderSizePixel = 0
 	Title_1.LayoutOrder = 1
-	Title_1.Size = UDim2.new(0, 100,1, 0)
+	Title_1.Size = UDim2.new(0, 180,1, 0)
 
 	Desc_1.Name = "Desc"
 	Desc_1.Parent = Title_1
@@ -1589,11 +1589,11 @@ function Library:Window(p)
 	Desc_1.BorderColor3 = Color3.fromRGB(0,0,0)
 	Desc_1.BorderSizePixel = 0
 	Desc_1.LayoutOrder = 1
-	Desc_1.Size = UDim2.new(1, 0,0, 13)
+	Desc_1.Size = UDim2.new(1, 0,0, 16)
 	Desc_1.Font = Enum.Font.GothamBold
 	Desc_1.Text = Desc
 	Desc_1.TextColor3 = Color3.fromRGB(255,255,255)
-	Desc_1.TextSize = 10
+	Desc_1.TextSize = 12
 	Desc_1.TextTransparency = 0.5
 	Desc_1.TextXAlignment = Enum.TextXAlignment.Left
 	Desc_1.Visible = false
@@ -1614,11 +1614,11 @@ function Library:Window(p)
 	Title_2.BackgroundTransparency = 1
 	Title_2.BorderColor3 = Color3.fromRGB(0,0,0)
 	Title_2.BorderSizePixel = 0
-	Title_2.Size = UDim2.new(1, 0,0, 13)
+	Title_2.Size = UDim2.new(1, 0,0, 18)
 	Title_2.Font = Enum.Font.GothamBold
 	Title_2.Text = Title
 	Title_2.TextColor3 = Color3.fromRGB(255,255,255)
-	Title_2.TextSize = 12
+	Title_2.TextSize = 18
 	Title_2.TextXAlignment = Enum.TextXAlignment.Left
 
 	addToTheme('Text & Icon', Title_2)
@@ -1647,7 +1647,7 @@ function Library:Window(p)
 	Frame_6.BackgroundTransparency = 1
 	Frame_6.BorderColor3 = Color3.fromRGB(0,0,0)
 	Frame_6.BorderSizePixel = 0
-	Frame_6.Size = UDim2.new(0, 110,1, 0)
+	Frame_6.Size = UDim2.new(0, 150,1, 0)
 
 	ScrollingFrame_2.Name = "ScrollingFrame"
 	ScrollingFrame_2.Parent = Frame_6
