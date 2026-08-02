@@ -5167,6 +5167,8 @@ function Library:Window(p)
 				['Background'] = t.Background,
 				['Page'] = t.Page,
 				['Main'] = t.Main,
+				['Text'] = t.Text,
+				['Icon'] = t.Icon,
 				['Text & Icon'] = t['Text & Icon'],
 				['Function'] = {
 					['Toggle'] = {
