@@ -391,7 +391,7 @@ Gold = {
 				['Background'] = Color3.fromRGB(25, 25, 25),
 				['True'] = {
 					['Toggle Background'] = Color3.fromRGB(40, 40, 40),
-					['Toggle Value'] = Color3.fromRGB(70, 130, 180),
+					['Toggle Value'] = Color3.fromRGB(255, 128, 0),
 				},
 				['False'] = {
 					['Toggle Background'] = Color3.fromRGB(30, 30, 30),
@@ -416,7 +416,7 @@ Gold = {
 				['Value Background'] = Color3.fromRGB(20, 20, 20),
 				['Value Stroke'] = Color3.fromRGB(230, 230, 230),
 				['Slider Bar'] = Color3.fromRGB(40, 40, 40),
-				['Slider Bar Value'] = Color3.fromRGB(70, 130, 180),
+				['Slider Bar Value'] = Color3.fromRGB(255, 128, 0),
 				['Circle Value'] = Color3.fromRGB(255, 255, 255)
 			},
 			['Code'] = {
@@ -440,7 +440,7 @@ Gold = {
 				['Value Stroke'] = Color3.fromRGB(230, 230, 230),
 				['True'] = {
 					['Toggle Background'] = Color3.fromRGB(40, 40, 40),
-					['Toggle Value'] = Color3.fromRGB(70, 130, 180),
+					['Toggle Value'] = Color3.fromRGB(255, 128, 0),
 				},
 				['False'] = {
 					['Toggle Background'] = Color3.fromRGB(30, 30, 30),
