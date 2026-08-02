@@ -1345,6 +1345,18 @@ do
 
 		changecanvas(ScrollingFrame_1, UIListLayout_1, 5)
 
+		function itemslist:Edit(newdata, newdefault)
+			itemslist:Clear()
+			if type(newdata) == "table" then
+				for _, v in pairs(newdata) do
+					itemslist:Add(v)
+				end
+			end
+			if newdefault ~= nil then
+				itemslist:SetValue(newdefault)
+			end
+		end
+
 		return itemslist
 	end
 end
