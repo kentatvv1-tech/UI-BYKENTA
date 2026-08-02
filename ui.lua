@@ -1590,7 +1590,7 @@ function Library:Window(p)
 	Icon_1.ImageRectSize = gl(Icon).ImageRectSize
 	Icon_1.ImageRectOffset = gl(Icon).ImageRectPosition
 
-	addToTheme('Text & Icon', Icon_1)
+	addToTheme('Text', Icon_1)
 
 	Title_1.Name = "Title"
 	Title_1.Parent = Td_1
