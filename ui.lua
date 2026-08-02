@@ -1556,7 +1556,7 @@ function Library:Window(p)
 	UIListLayout_7.Parent = Td_1
 	UIListLayout_7.Padding = UDim.new(0,8)
 	UIListLayout_7.FillDirection = Enum.FillDirection.Horizontal
-	UIListLayout_7.HorizontalAlignment = Enum.HorizontalAlignment.Center
+	UIListLayout_7.HorizontalAlignment = Enum.HorizontalAlignment.Left
 	UIListLayout_7.SortOrder = Enum.SortOrder.LayoutOrder
 	UIListLayout_7.VerticalAlignment = Enum.VerticalAlignment.Center
 
@@ -2261,6 +2261,30 @@ function Library:Window(p)
 				end)
 				pcall(Callback)
 			end)
+
+			local New = {}
+
+			function New:SetTitle(t)
+				Config:SetTitle(t)
+			end
+
+			function New:SetDesc(t)
+				Config:SetDesc(t)
+			end
+
+			function New:SetVisible(t)
+				Button.Visible = t
+			end
+
+			function New:SetEnabled(t)
+				Click.Active = not not t
+			end
+
+			function New:SetCallback(fn)
+				Callback = fn or function() end
+			end
+
+			return New
 		end
 
 		function Func:Slider(p)
@@ -3411,8 +3435,8 @@ function Library:Window(p)
 			LogFrame.Size = UDim2.new(1, 0, 1, -25)
 			LogFrame.CanvasSize = UDim2.new(0, 0, 0, 0)
 			LogFrame.AutomaticCanvasSize = Enum.AutomaticSize.Y
-			LogFrame.ScrollBarThickness = 2
-			LogFrame.ScrollBarImageColor3 = Color3.fromRGB(80, 80, 120)
+			LogFrame.ScrollBarThickness = 3
+			LogFrame.ScrollBarImageColor3 = Color3.fromRGB(120, 120, 160)
 			LogFrame.ScrollingDirection = Enum.ScrollingDirection.Y
 			LogFrame.BottomImage = "rbxasset://textures/ui/Scroll/scroll-bottom.png"
 			LogFrame.MidImage = "rbxasset://textures/ui/Scroll/scroll-middle.png"
@@ -3421,13 +3445,13 @@ function Library:Window(p)
 
 			LogLayout.Parent = LogFrame
 			LogLayout.SortOrder = Enum.SortOrder.LayoutOrder
-			LogLayout.Padding = UDim.new(0, 1)
+			LogLayout.Padding = UDim.new(0, 4)
 
 			LogPadding.Parent = LogFrame
-			LogPadding.PaddingLeft = UDim.new(0, 6)
-			LogPadding.PaddingRight = UDim.new(0, 6)
-			LogPadding.PaddingTop = UDim.new(0, 4)
-			LogPadding.PaddingBottom = UDim.new(0, 4)
+			LogPadding.PaddingLeft = UDim.new(0, 8)
+			LogPadding.PaddingRight = UDim.new(0, 8)
+			LogPadding.PaddingTop = UDim.new(0, 8)
+			LogPadding.PaddingBottom = UDim.new(0, 8)
 
 			-- === Log colors by level ===
 			local levelColors = {
@@ -3463,27 +3487,67 @@ function Library:Window(p)
 				local icon = levelIcons[level] or "·"
 				local color = levelColors[level] or Color3.fromRGB(200, 200, 200)
 
-				local Row = Instance.new("TextLabel")
-				Row.Parent = LogFrame
-				Row.BackgroundTransparency = 1
-				Row.BorderSizePixel = 0
-				Row.Size = UDim2.new(1, 0, 0, 14)
-				Row.AutomaticSize = Enum.AutomaticSize.Y
-				Row.Font = Enum.Font.Code
-				Row.RichText = true
-				Row.TextXAlignment = Enum.TextXAlignment.Left
-				Row.TextSize = 10
-				Row.TextWrapped = true
-				Row.TextColor3 = color
-				Row.Text = string.format(
-					'<font color="#%02x%02x%02x" size="9">%s</font>  <font color="#%02x%02x%02x">%s</font>  %s',
+				-- Card Container
+				local RowFrame = Instance.new("Frame")
+				local RowCorner = Instance.new("UICorner")
+				local AccentBar = Instance.new("Frame")
+				local AccentCorner = Instance.new("UICorner")
+				local RowLabel = Instance.new("TextLabel")
+				local RowPadding = Instance.new("UIPadding")
+
+				RowFrame.Parent = LogFrame
+				RowFrame.BackgroundColor3 = Color3.fromRGB(26, 26, 34)
+				RowFrame.BackgroundTransparency = 1 -- เริ่มต้นที่ใสสำหรับ animation
+				RowFrame.BorderSizePixel = 0
+				RowFrame.Size = UDim2.new(1, 0, 0, 0)
+				RowFrame.AutomaticSize = Enum.AutomaticSize.Y
+				RowFrame.LayoutOrder = logCount
+
+				RowCorner.Parent = RowFrame
+				RowCorner.CornerRadius = UDim.new(0, 6)
+
+				AccentBar.Parent = RowFrame
+				AccentBar.BackgroundColor3 = color
+				AccentBar.BorderSizePixel = 0
+				AccentBar.Size = UDim2.new(0, 3, 1, 0)
+				AccentBar.Position = UDim2.new(0, 0, 0, 0)
+				AccentBar.BackgroundTransparency = 1
+
+				AccentCorner.Parent = AccentBar
+				AccentCorner.CornerRadius = UDim.new(0, 3)
+
+				RowLabel.Parent = RowFrame
+				RowLabel.BackgroundTransparency = 1
+				RowLabel.BorderSizePixel = 0
+				RowLabel.Size = UDim2.new(1, -6, 1, 0)
+				RowLabel.Position = UDim2.new(0, 8, 0, 0)
+				RowLabel.AutomaticSize = Enum.AutomaticSize.Y
+				RowLabel.Font = Enum.Font.GothamMedium
+				RowLabel.RichText = true
+				RowLabel.TextXAlignment = Enum.TextXAlignment.Left
+				RowLabel.TextSize = 11
+				RowLabel.TextWrapped = true
+				RowLabel.TextColor3 = Color3.fromRGB(240, 240, 245)
+				RowLabel.TextTransparency = 1
+				RowLabel.Text = string.format(
+					'<font color="#%02x%02x%02x" size="12"><b>%s</b></font>  <font color="#787896" size="9">%s</font>  %s',
 					math.floor(color.R*255), math.floor(color.G*255), math.floor(color.B*255), icon,
-					120, 120, 150, timeStr,
+					timeStr,
 					text
 				)
-				Row.LayoutOrder = logCount
 
-				table.insert(logLines, Row)
+				RowPadding.Parent = RowFrame
+				RowPadding.PaddingTop = UDim.new(0, 6)
+				RowPadding.PaddingBottom = UDim.new(0, 6)
+
+				table.insert(logLines, RowFrame)
+
+				-- Fade in animation
+				local TweenService = game:GetService("TweenService")
+				local ti = TweenInfo.new(0.3, Enum.EasingStyle.Quart, Enum.EasingDirection.Out)
+				TweenService:Create(RowFrame, ti, {BackgroundTransparency = 0.4}):Play()
+				TweenService:Create(AccentBar, ti, {BackgroundTransparency = 0}):Play()
+				TweenService:Create(RowLabel, ti, {TextTransparency = 0}):Play()
 
 				-- auto-scroll to bottom
 				task.defer(function()
@@ -4478,6 +4542,18 @@ function Library:Window(p)
 			ImageLogo.ScaleType = Enum.ScaleType.Crop
 			UICorner_1.Parent = ImageLogo
 			UICorner_1.CornerRadius = UDim.new(0,3)
+
+			local New = {}
+
+			function New:SetImage(img)
+				ImageLogo.Image = img
+			end
+
+			function New:SetVisible(t)
+				ImageLogo.Visible = t
+			end
+
+			return New
 		end
 
 		return Func
