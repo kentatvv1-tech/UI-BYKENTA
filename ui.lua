@@ -1498,7 +1498,7 @@ function Library:Window(p)
 	UIListLayout_6.Parent = Ct_1
 	UIListLayout_6.Padding = UDim.new(0,6)
 	UIListLayout_6.FillDirection = Enum.FillDirection.Horizontal
-	UIListLayout_6.HorizontalAlignment = Enum.HorizontalAlignment.Left
+	UIListLayout_6.HorizontalAlignment = Enum.HorizontalAlignment.Right
 	UIListLayout_6.SortOrder = Enum.SortOrder.LayoutOrder
 	UIListLayout_6.VerticalAlignment = Enum.VerticalAlignment.Center
 
