@@ -1732,7 +1732,7 @@ function Library:Window(p)
 	UIPadding_17.Parent = TabP_1
 	UIPadding_17.PaddingBottom = UDim.new(0,5)
 	UIPadding_17.PaddingLeft = UDim.new(0,3)
-	UIPadding_17.PaddingTop = UDim.new(0,45)
+	UIPadding_17.PaddingTop = UDim.new(0,75)
 
 	changecanvas(ScrollingFrame_2, UIListLayout_10, 5)
 
