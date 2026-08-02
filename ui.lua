@@ -3260,8 +3260,8 @@ function Library:Window(p)
 						Key = input.KeyCode
 						TextLabel_1.Text = tostring(Key):gsub("Enum.KeyCode.", "")
 						adjustBoxBindSize()
+						-- เปลี่ยนแค่ key แสดง ไม่ trigger callback
 						inputConnection:Disconnect()
-						pcall(Callback, Key, Value)
 						task.wait(.1)
 						changeing = false
 					end
@@ -3269,15 +3269,17 @@ function Library:Window(p)
 			end
 
 			U.InputBegan:Connect(function(input, gameProcessed)
+				if gameProcessed then return end
 				if input.KeyCode == Key and not changeing then
 					change()
-					pcall(Callback, Key, Value)
+					pcall(Callback, Value, Key)
 				end
 			end)
 
-			delay(0, function()
-				pcall(Callback, Key, Value)
-			end)
+			-- ไม่เรียก Callback ตอน init เพื่อป้องกัน toggle เปิดทันที
+			-- delay(0, function()
+			-- 	pcall(Callback, Key, Value)
+			-- end)
 
 			Keybind:GetPropertyChangedSignal("BackgroundColor3"):Connect(function()
 				if Value then
@@ -3314,7 +3316,223 @@ function Library:Window(p)
 				Key = t
 				TextLabel_1.Text = tostring(Key):gsub("Enum.KeyCode.", "")
 				adjustBoxBindSize()
-				pcall(Callback, Key, Value)
+				-- ไม่เรียก callback ตอน SetKey
+			end
+
+			return New
+		end
+
+		-- ===== K2NTA Console Component =====
+		function Func:Console(p)
+			local Title = p.Title or 'Console'
+			local MaxLines = p.MaxLines or 100
+
+			-- === Container background ===
+			local RealBG = Instance.new("Frame")
+			local ConsoleBG = Instance.new("Frame")
+			local UICornerCon = Instance.new("UICorner")
+			local UIStrokeCon = Instance.new("UIStroke")
+
+			RealBG.Name = "Real Background"
+			RealBG.Parent = ScrollingFrame_1
+			RealBG.BackgroundTransparency = 1
+			RealBG.BorderSizePixel = 0
+			RealBG.Size = UDim2.new(1, 0, 0, 220)
+			RealBG.ClipsDescendants = false
+
+			ConsoleBG.Name = "Background"
+			ConsoleBG.Parent = RealBG
+			ConsoleBG.BackgroundColor3 = Color3.fromRGB(14, 14, 18)
+			ConsoleBG.BorderSizePixel = 0
+			ConsoleBG.Size = UDim2.new(1, 0, 1, 0)
+
+			UICornerCon.Parent = ConsoleBG
+			UICornerCon.CornerRadius = UDim.new(0, 8)
+
+			UIStrokeCon.Parent = ConsoleBG
+			UIStrokeCon.Color = Color3.fromRGB(60, 60, 80)
+			UIStrokeCon.Thickness = 1
+
+			-- === Topbar: title + clear button ===
+			local TopBar = Instance.new("Frame")
+			local TopLabel = Instance.new("TextLabel")
+			local ClearBtn = Instance.new("TextButton")
+			local UICornerClear = Instance.new("UICorner")
+
+			TopBar.Parent = ConsoleBG
+			TopBar.BackgroundTransparency = 1
+			TopBar.BorderSizePixel = 0
+			TopBar.Size = UDim2.new(1, 0, 0, 24)
+			TopBar.Position = UDim2.new(0, 0, 0, 0)
+
+			TopLabel.Parent = TopBar
+			TopLabel.BackgroundTransparency = 1
+			TopLabel.BorderSizePixel = 0
+			TopLabel.Size = UDim2.new(1, -60, 1, 0)
+			TopLabel.Position = UDim2.new(0, 8, 0, 0)
+			TopLabel.Font = Enum.Font.GothamBold
+			TopLabel.Text = "📋 " .. Title
+			TopLabel.TextColor3 = Color3.fromRGB(160, 160, 200)
+			TopLabel.TextSize = 10
+			TopLabel.TextXAlignment = Enum.TextXAlignment.Left
+
+			ClearBtn.Parent = TopBar
+			ClearBtn.BackgroundColor3 = Color3.fromRGB(45, 20, 20)
+			ClearBtn.BorderSizePixel = 0
+			ClearBtn.AnchorPoint = Vector2.new(1, 0.5)
+			ClearBtn.Position = UDim2.new(1, -6, 0.5, 0)
+			ClearBtn.Size = UDim2.new(0, 48, 0, 16)
+			ClearBtn.Font = Enum.Font.GothamBold
+			ClearBtn.Text = "CLEAR"
+			ClearBtn.TextColor3 = Color3.fromRGB(255, 80, 80)
+			ClearBtn.TextSize = 9
+
+			UICornerClear.Parent = ClearBtn
+			UICornerClear.CornerRadius = UDim.new(0, 4)
+
+			-- Divider line
+			local Divider = Instance.new("Frame")
+			Divider.Parent = ConsoleBG
+			Divider.BackgroundColor3 = Color3.fromRGB(50, 50, 70)
+			Divider.BorderSizePixel = 0
+			Divider.Position = UDim2.new(0, 0, 0, 24)
+			Divider.Size = UDim2.new(1, 0, 0, 1)
+
+			-- === Scrolling log area ===
+			local LogFrame = Instance.new("ScrollingFrame")
+			local LogLayout = Instance.new("UIListLayout")
+			local LogPadding = Instance.new("UIPadding")
+
+			LogFrame.Parent = ConsoleBG
+			LogFrame.BackgroundTransparency = 1
+			LogFrame.BorderSizePixel = 0
+			LogFrame.Position = UDim2.new(0, 0, 0, 25)
+			LogFrame.Size = UDim2.new(1, 0, 1, -25)
+			LogFrame.CanvasSize = UDim2.new(0, 0, 0, 0)
+			LogFrame.AutomaticCanvasSize = Enum.AutomaticSize.Y
+			LogFrame.ScrollBarThickness = 2
+			LogFrame.ScrollBarImageColor3 = Color3.fromRGB(80, 80, 120)
+			LogFrame.ScrollingDirection = Enum.ScrollingDirection.Y
+			LogFrame.BottomImage = "rbxasset://textures/ui/Scroll/scroll-bottom.png"
+			LogFrame.MidImage = "rbxasset://textures/ui/Scroll/scroll-middle.png"
+			LogFrame.TopImage = "rbxasset://textures/ui/Scroll/scroll-top.png"
+			LogFrame.ClipsDescendants = true
+
+			LogLayout.Parent = LogFrame
+			LogLayout.SortOrder = Enum.SortOrder.LayoutOrder
+			LogLayout.Padding = UDim.new(0, 1)
+
+			LogPadding.Parent = LogFrame
+			LogPadding.PaddingLeft = UDim.new(0, 6)
+			LogPadding.PaddingRight = UDim.new(0, 6)
+			LogPadding.PaddingTop = UDim.new(0, 4)
+			LogPadding.PaddingBottom = UDim.new(0, 4)
+
+			-- === Log colors by level ===
+			local levelColors = {
+				info    = Color3.fromRGB(140, 200, 255),
+				success = Color3.fromRGB(100, 230, 130),
+				warn    = Color3.fromRGB(255, 210, 80),
+				error   = Color3.fromRGB(255, 90, 90),
+				system  = Color3.fromRGB(180, 140, 255),
+			}
+			local levelIcons = {
+				info    = "ℹ",
+				success = "✓",
+				warn    = "⚠",
+				error   = "✗",
+				system  = "◈",
+			}
+
+			local logCount = 0
+			local logLines = {}
+
+			-- === Internal: add line ===
+			local function addLine(text, level)
+				level = level or "info"
+				logCount = logCount + 1
+
+				-- remove oldest if over max
+				if #logLines >= MaxLines then
+					local oldest = table.remove(logLines, 1)
+					if oldest and oldest.Parent then oldest:Destroy() end
+				end
+
+				local timeStr = os.date and os.date("%H:%M:%S") or ""
+				local icon = levelIcons[level] or "·"
+				local color = levelColors[level] or Color3.fromRGB(200, 200, 200)
+
+				local Row = Instance.new("TextLabel")
+				Row.Parent = LogFrame
+				Row.BackgroundTransparency = 1
+				Row.BorderSizePixel = 0
+				Row.Size = UDim2.new(1, 0, 0, 14)
+				Row.AutomaticSize = Enum.AutomaticSize.Y
+				Row.Font = Enum.Font.Code
+				Row.RichText = true
+				Row.TextXAlignment = Enum.TextXAlignment.Left
+				Row.TextSize = 10
+				Row.TextWrapped = true
+				Row.TextColor3 = color
+				Row.Text = string.format(
+					'<font color="#%02x%02x%02x" size="9">%s</font>  <font color="#%02x%02x%02x">%s</font>  %s',
+					math.floor(color.R*255), math.floor(color.G*255), math.floor(color.B*255), icon,
+					120, 120, 150, timeStr,
+					text
+				)
+				Row.LayoutOrder = logCount
+
+				table.insert(logLines, Row)
+
+				-- auto-scroll to bottom
+				task.defer(function()
+					LogFrame.CanvasPosition = Vector2.new(0, math.huge)
+				end)
+
+				-- print to real console too
+				print(string.format("[K2NTA][%s] %s %s", level:upper(), icon, text))
+			end
+
+			-- === Clear ===
+			ClearBtn.MouseButton1Click:Connect(function()
+				for _, v in ipairs(logLines) do
+					if v and v.Parent then v:Destroy() end
+				end
+				logLines = {}
+				logCount = 0
+			end)
+
+			-- hover effect on clear button
+			ClearBtn.MouseEnter:Connect(function()
+				ClearBtn.BackgroundColor3 = Color3.fromRGB(80, 25, 25)
+			end)
+			ClearBtn.MouseLeave:Connect(function()
+				ClearBtn.BackgroundColor3 = Color3.fromRGB(45, 20, 20)
+			end)
+
+			-- === Public API ===
+			local New = {}
+
+			function New:Log(text, level)
+				addLine(text, level or "info")
+			end
+
+			function New:Info(text)    addLine(text, "info")    end
+			function New:Success(text) addLine(text, "success") end
+			function New:Warn(text)    addLine(text, "warn")    end
+			function New:Error(text)   addLine(text, "error")   end
+			function New:System(text)  addLine(text, "system")  end
+
+			function New:Clear()
+				for _, v in ipairs(logLines) do
+					if v and v.Parent then v:Destroy() end
+				end
+				logLines = {}
+				logCount = 0
+			end
+
+			function New:SetVisible(t)
+				RealBG.Visible = t
 			end
 
 			return New
