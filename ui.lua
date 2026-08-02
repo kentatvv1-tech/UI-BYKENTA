@@ -383,6 +383,8 @@ Gold = {
 		['Background'] = Color3.fromRGB(20, 20, 20),
 		['Page'] = Color3.fromRGB(18, 18, 18),
 		['Main'] = Color3.fromRGB(50, 50, 50),
+		['Text'] = Color3.fromRGB(255, 255, 255),
+		['Icon'] = Color3.fromRGB(255, 128, 0),
 		['Text & Icon'] = Color3.fromRGB(230, 230, 230),
 		['Function'] = {
 			['Toggle'] = {
@@ -479,25 +481,30 @@ do
 	end
 	function Library:setTheme(st)
 		for name, objs in pairs(SaveTheme) do
-			local color = getColorFromPath(st, name)
-			if color then
-				for _, obj in pairs(objs) do
-					if SaveTheme[name] then
-						for _, obj in pairs(SaveTheme[name]) do
-							if obj:IsA("Frame") or obj:IsA("CanvasGroup") then
-								obj.BackgroundColor3 = color
-							elseif obj:IsA("TextLabel") or obj:IsA("TextButton") or obj:IsA("TextBox") then
-								obj.TextColor3 = color
-							elseif obj:IsA("ImageLabel") or obj:IsA("ImageButton") then
-								obj.ImageColor3 = color
-							elseif obj:IsA("ScrollingFrame") then
-								obj.ScrollBarImageColor3 = color
-							elseif obj:IsA("UIStroke") then
-								obj.Color = color
-							elseif obj:IsA("UIGradient") then
-								obj.Color = color
-							end
-						end
+			for _, obj in pairs(objs) do
+				local overrideName = name
+				if name == 'Text & Icon' then
+					if obj:IsA("ImageLabel") or obj:IsA("ImageButton") then
+						overrideName = 'Icon'
+					elseif obj:IsA("TextLabel") or obj:IsA("TextButton") or obj:IsA("TextBox") then
+						overrideName = 'Text'
+					end
+				end
+				
+				local color = getColorFromPath(st, overrideName) or getColorFromPath(st, name)
+				if color then
+					if obj:IsA("Frame") or obj:IsA("CanvasGroup") then
+						obj.BackgroundColor3 = color
+					elseif obj:IsA("TextLabel") or obj:IsA("TextButton") or obj:IsA("TextBox") then
+						obj.TextColor3 = color
+					elseif obj:IsA("ImageLabel") or obj:IsA("ImageButton") then
+						obj.ImageColor3 = color
+					elseif obj:IsA("ScrollingFrame") then
+						obj.ScrollBarImageColor3 = color
+					elseif obj:IsA("UIStroke") then
+						obj.Color = color
+					elseif obj:IsA("UIGradient") then
+						obj.Color = color
 					end
 				end
 			end
@@ -2294,7 +2301,7 @@ function Library:Window(p)
 			local Min = p.Min or 0
 			local Max = p.Max or 100
 			local Value = p.Value or Min + 1
-			local Rounding = p.Rounding or 2
+			local Rounding = p.Rounding or 0
 			local Callback = p.Callback or function() end
 
 			local Slider, Config = background(ScrollingFrame_1, Title, Desc, Image, 'Slider')
