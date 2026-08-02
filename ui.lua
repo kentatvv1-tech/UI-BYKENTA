@@ -3148,7 +3148,8 @@ function Library:Window(p)
 			ToggleValue_1.BorderColor3 = Color3.fromRGB(0,0,0)
 			ToggleValue_1.BorderSizePixel = 0
 			ToggleValue_1.LayoutOrder = 1
-			ToggleValue_1.Size = UDim2.new(0, 34,0, 17)
+			ToggleValue_1.Size = UDim2.new(0, 0, 0, 0)   -- ซ่อน: ไม่ใช้พื้นที่ใน layout
+			ToggleValue_1.Visible = false
 
 			UICorner_1.Parent = ToggleValue_1
 			UICorner_1.CornerRadius = UDim.new(1,0)
